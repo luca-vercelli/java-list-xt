@@ -2,7 +2,7 @@ package javax.util;
 
 import java.util.Collection;
 
-public class NumberLinkedList<E extends Number> extends LinkedListXt<E> implements NumberListXt<E> {
+public class NumberLinkedList extends LinkedListXt<Number> implements NumberListXt {
 
 	private static final long serialVersionUID = 8135630540372015813L;
 
@@ -10,11 +10,11 @@ public class NumberLinkedList<E extends Number> extends LinkedListXt<E> implemen
 		super();
 	}
 
-	public NumberLinkedList(Collection<? extends E> elements) {
+	public NumberLinkedList(Collection<? extends Number> elements) {
 		super(elements);
 	}
 
-	public NumberLinkedList(E[] elements) {
+	public NumberLinkedList(Number[] elements) {
 		super(elements);
 	}
 

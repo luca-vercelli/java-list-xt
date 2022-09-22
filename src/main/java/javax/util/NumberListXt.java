@@ -2,7 +2,7 @@ package javax.util;
 
 import java.util.Iterator;
 
-public interface NumberListXt<E extends Number> extends ListXt<E> {
+public interface NumberListXt extends ListXt<Number> {
 
 	/**
 	 * Sum a list of <code>Number</code>'s.
@@ -11,7 +11,7 @@ public interface NumberListXt<E extends Number> extends ListXt<E> {
 	 */
 	default double sum() {
 		double current = 0;
-		for (E element : this) {
+		for (Number element : this) {
 			current += element.doubleValue();
 		}
 		return current;
@@ -24,7 +24,7 @@ public interface NumberListXt<E extends Number> extends ListXt<E> {
 	 */
 	default double mul() {
 		double current = 1;
-		for (E element : this) {
+		for (Number element : this) {
 			current *= element.doubleValue();
 		}
 		return current;
@@ -39,7 +39,7 @@ public interface NumberListXt<E extends Number> extends ListXt<E> {
 	 */
 	default double norm() {
 		double current = 0;
-		for (E element : this) {
+		for (Number element : this) {
 			double x = element.doubleValue();
 			current += x * x;
 		}
@@ -67,7 +67,7 @@ public interface NumberListXt<E extends Number> extends ListXt<E> {
 	default double sigma() {
 		double avg = avg();
 		double current = 0;
-		for (E element : this) {
+		for (Number element : this) {
 			double x = element.doubleValue() - avg;
 			current += x * x;
 		}
@@ -81,15 +81,58 @@ public interface NumberListXt<E extends Number> extends ListXt<E> {
 	 * @throws <code>IllegalArgumentException</code> if the two lists have different
 	 * size
 	 */
-	default double mul(ListXt<E> other) {
+	default double mul(ListXt<Number> other) {
 		if (size() != other.size())
 			throw new IllegalArgumentException("Cannot multiply vectors of different size");
 		double current = 0;
-		Iterator<E> it = other.iterator();
-		for (E x : this) {
-			E y = it.next();
+		Iterator<Number> it = other.iterator();
+		for (Number x : this) {
+			Number y = it.next();
 			current += x.doubleValue() * y.doubleValue();
 		}
 		return current;
+	}
+
+	/**
+	 * Multiplies a list of <code>Number</code>'s by a scalar value.
+	 * 
+	 * @return new list
+	 */
+	default NumberListXt scalarMul(Number other) {
+		NumberListXt l = new NumberArrayListXt(size());
+		for (Number element : this) {
+			l.add(other.doubleValue() * element.doubleValue());
+		}
+		return l;
+	}
+
+	/**
+	 * Sum two list of <code>Number</code>'s.
+	 * 
+	 * @return new list
+	 */
+	default NumberListXt sumPairwise(NumberListXt other) {
+		NumberListXt l = new NumberArrayListXt(size());
+		Iterator<Number> it = other.iterator();
+		for (Number element : this) {
+			Number y = it.next();
+			l.add(y.doubleValue() + element.doubleValue());
+		}
+		return l;
+	}
+
+	/**
+	 * Multiplies two lists of <code>Number</code>'s.
+	 * 
+	 * @return new list
+	 */
+	default NumberListXt mulPairwise(NumberListXt other) {
+		NumberListXt l = new NumberArrayListXt(size());
+		Iterator<Number> it = other.iterator();
+		for (Number element : this) {
+			Number y = it.next();
+			l.add(y.doubleValue() * element.doubleValue());
+		}
+		return l;
 	}
 }

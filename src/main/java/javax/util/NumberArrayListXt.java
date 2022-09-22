@@ -2,7 +2,7 @@ package javax.util;
 
 import java.util.Collection;
 
-public class NumberArrayListXt<E extends Number> extends ArrayListXt<E> implements NumberListXt<E> {
+public class NumberArrayListXt extends ArrayListXt<Number> implements NumberListXt {
 
 	private static final long serialVersionUID = -5312520008862797486L;
 
@@ -10,11 +10,11 @@ public class NumberArrayListXt<E extends Number> extends ArrayListXt<E> implemen
 		super();
 	}
 
-	public NumberArrayListXt(Collection<? extends E> elements) {
+	public NumberArrayListXt(Collection<? extends Number> elements) {
 		super(elements);
 	}
 
-	public NumberArrayListXt(E[] elements) {
+	public NumberArrayListXt(Number[] elements) {
 		super(elements);
 	}
 
