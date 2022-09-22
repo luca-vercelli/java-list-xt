@@ -1,5 +1,7 @@
 package javax.util;
 
+import java.util.Iterator;
+
 public interface NumberListXt<E extends Number> extends ListXt<E> {
 
 	/**
@@ -48,11 +50,11 @@ public interface NumberListXt<E extends Number> extends ListXt<E> {
 	 * Average of elements of this list of <code>Number</code>'s.
 	 * 
 	 * @return avg of elements
-	 * @throws <code>RuntimeException</code> if list is empty
+	 * @throws <code>IllegalArgumentException</code> if list is empty
 	 */
 	default double avg() {
 		if (isEmpty())
-			throw new RuntimeException("Cannot calculate average of empty list");
+			throw new IllegalArgumentException("Cannot calculate average of empty list");
 		return sum() / size();
 	}
 
@@ -60,7 +62,7 @@ public interface NumberListXt<E extends Number> extends ListXt<E> {
 	 * Return standard deviation of this list of <code>Number</code>'s.
 	 * 
 	 * @return standard deviation of list
-	 * @throws <code>RuntimeException</code> if list is empty
+	 * @throws <code>IllegalArgumentException</code> if list is empty
 	 */
 	default double sigma() {
 		double avg = avg();
@@ -70,5 +72,24 @@ public interface NumberListXt<E extends Number> extends ListXt<E> {
 			current += x * x;
 		}
 		return Math.sqrt(current);
+	}
+
+	/**
+	 * Multiplies a list of <code>Number</code>'s.
+	 * 
+	 * @return sum of elements, and in particular 1 if list is empty
+	 * @throws <code>IllegalArgumentException</code> if the two lists have different
+	 * size
+	 */
+	default double mul(ListXt<E> other) {
+		if (size() != other.size())
+			throw new IllegalArgumentException("Cannot multiply vectors of different size");
+		double current = 0;
+		Iterator<E> it = other.iterator();
+		for (E x : this) {
+			E y = it.next();
+			current += x.doubleValue() * y.doubleValue();
+		}
+		return current;
 	}
 }

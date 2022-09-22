@@ -31,6 +31,12 @@ public class NumberListXtTest {
 	}
 
 	@Test
+	public void testMul2() {
+		assertEquals(460, l.mul(l));
+		assertEquals(0, e.mul(e));
+	}
+
+	@Test
 	public void testAvg() {
 		assertEquals(5.75, l.avg());
 	}
