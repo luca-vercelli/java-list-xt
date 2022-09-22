@@ -18,6 +18,7 @@ public class JavaXtTest {
 		l.add(1);
 		l.add(2);
 		l.add(3);
+		l.add(3);
 	}
 
 	@Test
@@ -56,7 +57,7 @@ public class JavaXtTest {
 	public void testFilter() {
 		ListXt<Integer> filtered = l.filter(x -> x > 1);
 		assertNotNull(filtered);
-		assertEquals(2, filtered.size());
+		assertEquals(3, filtered.size());
 
 		filtered = e.filter(x -> x > 1);
 		assertNotNull(filtered);
@@ -67,11 +68,23 @@ public class JavaXtTest {
 	public void testMap() {
 		ListXt<Integer> mapped = l.map(x -> x + 1);
 		assertNotNull(mapped);
-		assertEquals(3, mapped.size());
+		assertEquals(4, mapped.size());
 		assertEquals(4, mapped.get(2));
 
 		mapped = e.map(x -> x + 1);
 		assertNotNull(mapped);
 		assertEquals(0, mapped.size());
+	}
+	
+	@Test
+	public void testSum() {
+		assertEquals(9, l.sum());
+		assertEquals(0, e.sum());
+	}
+	
+	@Test
+	public void testMul() {
+		assertEquals(18, l.mul());
+		assertEquals(1, e.mul());
 	}
 }
