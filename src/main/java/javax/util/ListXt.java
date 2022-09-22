@@ -371,19 +371,6 @@ public interface ListXt<E> extends List<E> {
 	}
 
 	/**
-	 * Average of elements of this list of <code>Number</code>'s.
-	 * 
-	 * @return avg of elements, and in particular 0 if list is empty
-	 * @throws <code>ClassCastException</code> if elements are not
-	 * <code>Number</code>'s
-	 */
-	default double avg() {
-		if (isEmpty())
-			throw new NullPointerException("Cannot calculate average of empty list");
-		return sum() / size();
-	}
-
-	/**
 	 * Return a mathematical norm for this list of <code>Number</code>'s.
 	 * 
 	 * @return norm of elements, and in particular 0 if list is empty
@@ -396,6 +383,40 @@ public interface ListXt<E> extends List<E> {
 			if (!(element instanceof Number))
 				throw new ClassCastException("Non Number class: " + element.getClass());
 			double x = ((Number) element).doubleValue();
+			current += x * x;
+		}
+		return Math.sqrt(current);
+	}
+
+	/**
+	 * Average of elements of this list of <code>Number</code>'s.
+	 * 
+	 * @return avg of elements
+	 * @throws <code>ClassCastException</code> if elements are not
+	 * <code>Number</code>'s
+	 * @throws <code>RuntimeException</code> if list is empty
+	 */
+	default double avg() {
+		if (isEmpty())
+			throw new RuntimeException("Cannot calculate average of empty list");
+		return sum() / size();
+	}
+
+	/**
+	 * Return standard deviation of this list of <code>Number</code>'s.
+	 * 
+	 * @return standard deviation of list
+	 * @throws <code>RuntimeException</code> if list is empty
+	 * @throws <code>ClassCastException</code> if elements are not
+	 * <code>Number</code>'s
+	 */
+	default double sigma() {
+		double avg = avg();
+		double current = 0;
+		for (E element : this) {
+			if (!(element instanceof Number))
+				throw new ClassCastException("Non Number class: " + element.getClass());
+			double x = ((Number) element).doubleValue() - avg;
 			current += x * x;
 		}
 		return Math.sqrt(current);

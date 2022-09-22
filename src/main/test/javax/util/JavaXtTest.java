@@ -128,6 +128,13 @@ public class JavaXtTest {
 	}
 
 	@Test
+	public void testSigma() {
+		double expected = 13.9821;
+		double sigma = l.sigma();
+		assertTrue(Math.abs(sigma - expected) < 0.001);
+	}
+
+	@Test
 	public void testNorm() {
 		double expected = 21.4476;
 		double norm = l.norm();
