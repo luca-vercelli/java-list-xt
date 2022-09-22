@@ -2,10 +2,18 @@ package javax.util;
 
 import java.util.Iterator;
 
+/**
+ * This is essentially a vector of numbers, so we can perform typical algebraic
+ * and statistical operations. Notice that this is not intended as a real math
+ * library; performance is quite bad.
+ * 
+ * @author luca vercelli 2022
+ *
+ */
 public interface NumberListXt extends ListXt<Number> {
 
 	/**
-	 * Sum a list of <code>Number</code>'s.
+	 * Sum list elements.
 	 * 
 	 * @return sum of elements, and in particular 0 if list is empty
 	 */
@@ -18,7 +26,7 @@ public interface NumberListXt extends ListXt<Number> {
 	}
 
 	/**
-	 * Multiplies a list of <code>Number</code>'s.
+	 * Multiply list elements.
 	 * 
 	 * @return sum of elements, and in particular 1 if list is empty
 	 */
@@ -31,9 +39,9 @@ public interface NumberListXt extends ListXt<Number> {
 	}
 
 	/**
-	 * Return a mathematical norm for this list of <code>Number</code>'s.
+	 * Vector norm.
 	 * 
-	 * @return norm of elements, and in particular 0 if list is empty
+	 * @return norm of vector, and in particular 0 if list is empty
 	 * @throws <code>ClassCastException</code> if elements are not
 	 * <code>Number</code>'s
 	 */
@@ -47,7 +55,7 @@ public interface NumberListXt extends ListXt<Number> {
 	}
 
 	/**
-	 * Average of elements of this list of <code>Number</code>'s.
+	 * Average of list elements.
 	 * 
 	 * @return avg of elements
 	 * @throws <code>IllegalArgumentException</code> if list is empty
@@ -59,7 +67,7 @@ public interface NumberListXt extends ListXt<Number> {
 	}
 
 	/**
-	 * Return standard deviation of this list of <code>Number</code>'s.
+	 * Return standard deviation of this list.
 	 * 
 	 * @return standard deviation of list
 	 * @throws <code>IllegalArgumentException</code> if list is empty
@@ -75,9 +83,9 @@ public interface NumberListXt extends ListXt<Number> {
 	}
 
 	/**
-	 * Multiplies a list of <code>Number</code>'s.
+	 * Scalar multiplication of two vectors.
 	 * 
-	 * @return sum of elements, and in particular 1 if list is empty
+	 * @return scalar multiplication of given vectors
 	 * @throws <code>IllegalArgumentException</code> if the two lists have different
 	 * size
 	 */
@@ -94,7 +102,7 @@ public interface NumberListXt extends ListXt<Number> {
 	}
 
 	/**
-	 * Multiplies a list of <code>Number</code>'s by a scalar value.
+	 * Multiply this vector by a scalar value.
 	 * 
 	 * @return new list
 	 */
@@ -107,11 +115,15 @@ public interface NumberListXt extends ListXt<Number> {
 	}
 
 	/**
-	 * Sum two list of <code>Number</code>'s.
+	 * Sum two vectors pairwise.
 	 * 
 	 * @return new list
+	 * @throws <code>IllegalArgumentException</code> if the two lists have different
+	 * size
 	 */
 	default NumberListXt sumPairwise(NumberListXt other) {
+		if (size() != other.size())
+			throw new IllegalArgumentException("Cannot sum vectors of different size");
 		NumberListXt l = new NumberArrayListXt(size());
 		Iterator<Number> it = other.iterator();
 		for (Number element : this) {
@@ -122,11 +134,15 @@ public interface NumberListXt extends ListXt<Number> {
 	}
 
 	/**
-	 * Multiplies two lists of <code>Number</code>'s.
+	 * Multiply two vectors pairwise.
 	 * 
 	 * @return new list
+	 * @throws <code>IllegalArgumentException</code> if the two lists have different
+	 * size
 	 */
 	default NumberListXt mulPairwise(NumberListXt other) {
+		if (size() != other.size())
+			throw new IllegalArgumentException("Cannot multiply vectors of different size");
 		NumberListXt l = new NumberArrayListXt(size());
 		Iterator<Number> it = other.iterator();
 		for (Number element : this) {
