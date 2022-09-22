@@ -10,15 +10,14 @@ import org.junit.jupiter.api.Test;
 
 public class JavaXtTest {
 
-	ListXt<Integer> l = new ArrayListXt<>();
-	ListXt<Integer> e = new ArrayListXt<>();
+	ListXt<Integer> l;
+	ListXt<Integer> e;
 
 	@BeforeEach
 	public void setUp() {
-		l.add(1);
-		l.add(2);
-		l.add(3);
-		l.add(3);
+		Integer[] array = new Integer[] { 3, 10, -2, 1, 7, 6, 6, 15 };
+		l = new ArrayListXt<>(array);
+		e = new ArrayListXt<>();
 	}
 
 	@Test
@@ -29,27 +28,27 @@ public class JavaXtTest {
 
 	@Test
 	public void testAnyMatch() {
-		assertTrue(l.anyMatch(x -> x > 2));
-		assertTrue(l.anyMatch(x -> x < 2));
+		assertTrue(l.anyMatch(x -> x > -2));
+		assertTrue(l.anyMatch(x -> x < -1));
 	}
 
 	@Test
 	public void testNoneMatch() {
-		assertTrue(l.noneMatch(x -> x > 10));
-		assertTrue(e.noneMatch(x -> x > 10));
+		assertTrue(l.noneMatch(x -> x > 100));
+		assertTrue(e.noneMatch(x -> x > 100));
 	}
 
 	@Test
 	public void testFind() {
-		assertEquals(2, l.find(x -> x > 1));
-		assertNull(l.find(x -> x > 10));
+		assertEquals(10, l.find(x -> x > 6));
+		assertNull(l.find(x -> x > 100));
 		assertNull(e.find(x -> x > 0));
 	}
 
 	@Test
 	public void testFindIndex() {
-		assertEquals(1, l.findIndex(x -> x > 1));
-		assertEquals(-1, l.findIndex(x -> x > 10));
+		assertEquals(1, l.findIndex(x -> x > 6));
+		assertEquals(-1, l.findIndex(x -> x > 100));
 		assertEquals(-1, e.findIndex(x -> x > 0));
 	}
 
@@ -57,7 +56,7 @@ public class JavaXtTest {
 	public void testFilter() {
 		ListXt<Integer> filtered = l.filter(x -> x > 1);
 		assertNotNull(filtered);
-		assertEquals(3, filtered.size());
+		assertEquals(6, filtered.size());
 
 		filtered = e.filter(x -> x > 1);
 		assertNotNull(filtered);
@@ -68,8 +67,8 @@ public class JavaXtTest {
 	public void testMap() {
 		ListXt<Integer> mapped = l.map(x -> x + 1);
 		assertNotNull(mapped);
-		assertEquals(4, mapped.size());
-		assertEquals(4, mapped.get(2));
+		assertEquals(8, mapped.size());
+		assertEquals(-1, mapped.get(2));
 
 		mapped = e.map(x -> x + 1);
 		assertNotNull(mapped);
@@ -80,7 +79,7 @@ public class JavaXtTest {
 	public void testDistinct() {
 		ListXt<Integer> distinct = l.distinct();
 		assertNotNull(distinct);
-		assertEquals(3, distinct.size());
+		assertEquals(7, distinct.size());
 
 		distinct = e.distinct();
 		assertNotNull(distinct);
@@ -89,21 +88,19 @@ public class JavaXtTest {
 
 	@Test
 	public void testMax() {
-		assertEquals(3, l.max());
+		assertEquals(15, l.max());
 		assertNull(e.max());
 	}
 
 	@Test
 	public void testMin() {
-		assertEquals(1, l.min());
+		assertEquals(-2, l.min());
 		assertNull(e.min());
 	}
 
 	@Test
 	public void testSorted() {
-		Integer[] array = new Integer[] { 3, 10, -2, 0, 7, 6, 6, 15 };
-		ListXt<Integer> l = new ArrayListXt<>(array);
-		Integer[] arrayOrdered = new Integer[] { -2, 0, 3, 6, 6, 7, 10, 15 };
+		Integer[] arrayOrdered = new Integer[] { -2, 1, 3, 6, 6, 7, 10, 15 };
 		ListXt<Integer> expected = new ArrayListXt<>(arrayOrdered);
 		ListXt<Integer> sorted = l.sorted();
 		assertEquals(expected, sorted);
@@ -115,13 +112,25 @@ public class JavaXtTest {
 
 	@Test
 	public void testSum() {
-		assertEquals(9, l.sum());
+		assertEquals(46, l.sum());
 		assertEquals(0, e.sum());
 	}
 
 	@Test
 	public void testMul() {
-		assertEquals(18, l.mul());
+		assertEquals(-226800, l.mul());
 		assertEquals(1, e.mul());
+	}
+
+	@Test
+	public void testAvg() {
+		assertEquals(5.75, l.avg());
+	}
+
+	@Test
+	public void testNorm() {
+		double expected = 21.4476;
+		double norm = l.norm();
+		assertTrue(Math.abs(norm - expected) < 0.001);
 	}
 }

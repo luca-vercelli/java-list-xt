@@ -337,7 +337,7 @@ public interface ListXt<E> extends List<E> {
 	}
 
 	/**
-	 * Sum a list of Number's.
+	 * Sum a list of <code>Number</code>'s.
 	 * 
 	 * @return sum of elements, and in particular 0 if list is empty
 	 * @throws <code>ClassCastException</code> if elements are not
@@ -354,7 +354,7 @@ public interface ListXt<E> extends List<E> {
 	}
 
 	/**
-	 * Multiplies a list of Number's.
+	 * Multiplies a list of <code>Number</code>'s.
 	 * 
 	 * @return sum of elements, and in particular 1 if list is empty
 	 * @throws <code>ClassCastException</code> if elements are not
@@ -368,5 +368,36 @@ public interface ListXt<E> extends List<E> {
 			current *= ((Number) element).doubleValue();
 		}
 		return current;
+	}
+
+	/**
+	 * Average of elements of this list of <code>Number</code>'s.
+	 * 
+	 * @return avg of elements, and in particular 0 if list is empty
+	 * @throws <code>ClassCastException</code> if elements are not
+	 * <code>Number</code>'s
+	 */
+	default double avg() {
+		if (isEmpty())
+			throw new NullPointerException("Cannot calculate average of empty list");
+		return sum() / size();
+	}
+
+	/**
+	 * Return a mathematical norm for this list of <code>Number</code>'s.
+	 * 
+	 * @return norm of elements, and in particular 0 if list is empty
+	 * @throws <code>ClassCastException</code> if elements are not
+	 * <code>Number</code>'s
+	 */
+	default double norm() {
+		double current = 0;
+		for (E element : this) {
+			if (!(element instanceof Number))
+				throw new ClassCastException("Non Number class: " + element.getClass());
+			double x = ((Number) element).doubleValue();
+			current += x * x;
+		}
+		return Math.sqrt(current);
 	}
 }
