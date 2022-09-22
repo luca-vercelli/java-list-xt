@@ -24,4 +24,19 @@ public class ArrayListXt<E> extends ArrayList<E> implements ListXt<E> {
 		super(initialCapacity);
 	}
 
+	/**
+	 * Create a list of n equal elements
+	 * 
+	 * @param element
+	 * @param n
+	 * @return
+	 */
+	public static <E> ArrayListXt<E> sequence(E element, int n) {
+		ArrayListXt<E> l = new ArrayListXt<E>(n);
+		for (int i = 0; i < n; ++i) {
+			l.add(element);
+		}
+		return l;
+	}
+
 }
