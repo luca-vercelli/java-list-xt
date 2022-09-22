@@ -97,6 +97,37 @@ public interface ListXt<E> extends List<E> {
 	}
 
 	/**
+	 * Returns the first element matching given predicate.
+	 * 
+	 * @param predicate a non-interfering, stateless predicate to apply to each
+	 *                  element to determine if it should be included
+	 * @return first element, or null if not found.
+	 */
+	default E find(Predicate<? super E> predicate) {
+		for (E element : this)
+			if (predicate.test(element))
+				return element;
+		return null;
+	}
+
+	/**
+	 * Returns the index of the first element matching given predicate.
+	 * 
+	 * @param predicate a non-interfering, stateless predicate to apply to each
+	 *                  element to determine if it should be included
+	 * @return index of first element, or -1 if not found.
+	 */
+	default int findIndex(Predicate<? super E> predicate) {
+		int i = 0;
+		for (E element : this) {
+			if (predicate.test(element))
+				return i;
+			++i;
+		}
+		return -1;
+	}
+
+	/**
 	 * Returns a list consisting of the results of applying the given function to
 	 * the elements of this list.
 	 * 
