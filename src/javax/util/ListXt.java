@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -128,6 +129,30 @@ public interface ListXt<E> extends List<E> {
 	}
 
 	/**
+	 * Performs a reduction on the elements of this stream, using an associative
+	 * accumulation function, and returns an Optional describing the reduced value,
+	 * if any.
+	 * 
+	 * @param accumulator an associative, non-interfering, stateless function for
+	 *                    combining two values
+	 * @return the result of the reduction, or null if list is empty
+	 */
+	default E reduce(BinaryOperator<E> accumulator) {
+		boolean first = true;
+		E current = null;
+		for (E element : this) {
+			if (first) {
+				first = false;
+				current = element;
+			} else {
+				current = accumulator.apply(current, element);
+			}
+		}
+		return current;
+
+	}
+
+	/**
 	 * Returns a list consisting of the results of applying the given function to
 	 * the elements of this list.
 	 * 
@@ -151,12 +176,17 @@ public interface ListXt<E> extends List<E> {
 	 * @return the maximum element of this list, or null if the list is empty
 	 */
 	default E max(Comparator<? super E> comparator) {
-		if (isEmpty())
-			return null;
-		E current = get(0);
-		for (E element : this)
-			if (comparator.compare(element, current) > 0)
+		boolean first = true;
+		E current = null;
+		for (E element : this) {
+			if (first) {
+				first = false;
 				current = element;
+			} else {
+				if (comparator.compare(element, current) > 0)
+					current = element;
+			}
+		}
 		return current;
 	}
 
@@ -169,12 +199,17 @@ public interface ListXt<E> extends List<E> {
 	 * @return the minimum element of this list, or null if the list is empty
 	 */
 	default E min(Comparator<? super E> comparator) {
-		if (isEmpty())
-			return null;
-		E current = get(0);
-		for (E element : this)
-			if (comparator.compare(element, current) < 0)
+		boolean first = true;
+		E current = null;
+		for (E element : this) {
+			if (first) {
+				first = false;
 				current = element;
+			} else {
+				if (comparator.compare(element, current) < 0)
+					current = element;
+			}
+		}
 		return current;
 	}
 
@@ -185,16 +220,20 @@ public interface ListXt<E> extends List<E> {
 	 * @throws <code>ClassCastException</code> if elements are not Comparable
 	 */
 	default E max() {
-		if (isEmpty())
-			return null;
-		E current = get(0);
+		boolean first = true;
+		E current = null;
 		for (E element : this) {
-			if (!(element instanceof Comparable))
-				throw new ClassCastException("Non Comparable class: " + element.getClass());
-			@SuppressWarnings("unchecked")
-			Comparable<E> c = (Comparable<E>) element;
-			if (c.compareTo(current) > 0)
+			if (first) {
+				first = false;
 				current = element;
+			} else {
+				if (!(element instanceof Comparable))
+					throw new ClassCastException("Non Comparable class: " + element.getClass());
+				@SuppressWarnings("unchecked")
+				Comparable<E> c = (Comparable<E>) element;
+				if (c.compareTo(current) > 0)
+					current = element;
+			}
 		}
 		return current;
 	}
@@ -206,16 +245,20 @@ public interface ListXt<E> extends List<E> {
 	 * @throws <code>ClassCastException</code> if elements are not Comparable
 	 */
 	default E min() {
-		if (isEmpty())
-			return null;
-		E current = get(0);
+		boolean first = true;
+		E current = null;
 		for (E element : this) {
-			if (!(element instanceof Comparable))
-				throw new ClassCastException("Non Comparable class: " + element.getClass());
-			@SuppressWarnings("unchecked")
-			Comparable<E> c = (Comparable<E>) element;
-			if (c.compareTo(current) < 0)
+			if (first) {
+				first = false;
 				current = element;
+			} else {
+				if (!(element instanceof Comparable))
+					throw new ClassCastException("Non Comparable class: " + element.getClass());
+				@SuppressWarnings("unchecked")
+				Comparable<E> c = (Comparable<E>) element;
+				if (c.compareTo(current) < 0)
+					current = element;
+			}
 		}
 		return current;
 	}
