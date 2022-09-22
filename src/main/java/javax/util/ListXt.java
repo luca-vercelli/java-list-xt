@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -313,6 +314,26 @@ public interface ListXt<E> extends List<E> {
 			l.add(index, x);
 		}
 		return l;
+	}
+
+	/**
+	 * Split this list in groups, according to a classificator function.
+	 * 
+	 * @param <R>           type of group keys
+	 * @param classificator a non-interfering, stateless function mapping each
+	 *                      element into a non-mutable key
+	 * @return an ordered map of groups, whose order respects this list order
+	 */
+	default <R> TreeMap<R, ListXt<E>> classify(Function<E, R> classificator) {
+		TreeMap<R, ListXt<E>> map = new TreeMap<>();
+		for (E element : this) {
+			R key = classificator.apply(element);
+			if (!map.containsKey(key)) {
+				map.put(key, new ArrayListXt<>());
+			}
+			map.get(key).add(element);
+		}
+		return map;
 	}
 
 	/**
