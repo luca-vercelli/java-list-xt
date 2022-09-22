@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -75,13 +77,50 @@ public class JavaXtTest {
 		assertNotNull(mapped);
 		assertEquals(0, mapped.size());
 	}
-	
+
+	@Test
+	public void testDistinct() {
+		ListXt<Integer> distinct = l.distinct();
+		assertNotNull(distinct);
+		assertEquals(3, distinct.size());
+
+		distinct = e.distinct();
+		assertNotNull(distinct);
+		assertEquals(0, distinct.size());
+	}
+
+	@Test
+	public void testMax() {
+		assertEquals(3, l.max());
+		assertNull(e.max());
+	}
+
+	@Test
+	public void testMin() {
+		assertEquals(1, l.min());
+		assertNull(e.min());
+	}
+
+	@Test
+	public void testSorted() {
+		Integer[] array = new Integer[] { 3, 10, -2, 0, 7, 6, 6, 15 };
+		ListXt<Integer> l = new ArrayListXt<>(array);
+		Integer[] arrayOrdered = new Integer[] { -2, 0, 3, 6, 6, 7, 10, 15 };
+		ListXt<Integer> expected = new ArrayListXt<>(arrayOrdered);
+		ListXt<Integer> sorted = l.sorted();
+		assertEquals(expected, sorted);
+
+		sorted = e.distinct();
+		assertNotNull(sorted);
+		assertEquals(0, sorted.size());
+	}
+
 	@Test
 	public void testSum() {
 		assertEquals(9, l.sum());
 		assertEquals(0, e.sum());
 	}
-	
+
 	@Test
 	public void testMul() {
 		assertEquals(18, l.mul());

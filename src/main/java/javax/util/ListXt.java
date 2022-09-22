@@ -273,7 +273,7 @@ public interface ListXt<E> extends List<E> {
 	 */
 	default ListXt<E> sorted() {
 		// naive algorithm
-		ListXt<E> l = new LinkedListXt2<>();
+		ListXt<E> l = new LinkedListXt<>();
 		for (E element : this) {
 			if (!(element instanceof Comparable))
 				throw new ClassCastException("Non Comparable class: " + element.getClass());
@@ -281,7 +281,7 @@ public interface ListXt<E> extends List<E> {
 			Comparable<E> x = (Comparable<E>) element;
 			int index = 0;
 			for (E y : l) {
-				if (x.compareTo(y) > 0) {
+				if (x.compareTo(y) < 0) {
 					break;
 				}
 				++index;
@@ -301,11 +301,11 @@ public interface ListXt<E> extends List<E> {
 	 */
 	default ListXt<E> sorted(Comparator<? super E> comparator) {
 		// naive algorithm
-		ListXt<E> l = new LinkedListXt2<>();
+		ListXt<E> l = new LinkedListXt<>();
 		for (E x : this) {
 			int index = 0;
 			for (E y : l) {
-				if (comparator.compare(x, y) > 0) {
+				if (comparator.compare(x, y) < 0) {
 					break;
 				}
 				++index;
